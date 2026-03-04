@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Hormuz Shock — India's Most Underestimated Economic Risk</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #08090C;
+    --bg-card: #0F1117;
+    --bg-card-hover: #161922;
+    --gold: #C8923A;
+    --gold-light: #E8B86D;
+    --red: #E05252;
+    --green: #3DAA72;
+    --blue: #4A9EDB;
+    --muted: #4A4F5E;
+    --text: #E8E9EC;
+    --text-dim: #9BA1B0;
+    --border: #1E2230;
+    --border-gold: #C8923A44;
+    --bg-dark: #0D1019;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0D1019 0%, var(--bg) 100%);
+  }
+  .header-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 28px 32px 0;
+  }
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    gap: 24px;
+  }
+  .masthead-left { flex: 1; }
+  .badge-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .badge {
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 4px;
+  }
+  .badge-gold { color: var(--gold); border: 1px solid #C8923A44; background: #C8923A12; }
+  .badge-red { color: var(--red); border: 1px solid #E0525244; background: #E0525212; display: flex; align-items: center; gap: 5px; }
+  .pulse-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--red);
+    display: inline-block; animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px; font-weight: 800; color: var(--text);
+    line-height: 1.2; letter-spacing: 0.01em; max-width: 720px;
+  }
+  h1 .gold { color: var(--gold); }
+  .byline { font-size: 14px; color: var(--text-dim); margin-top: 12px; }
+  .byline strong { color: var(--text); }
+  .masthead-right { flex-shrink: 0; text-align: right; }
+  .price-box {
+    background: var(--bg-dark); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 8px;
+  }
+  .price-label { font-size: 10px; color: var(--text-dim); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .price-val { font-size: 28px; font-weight: 700; color: var(--gold); }
+  .price-val span { font-size: 14px; color: var(--red); }
+  .mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mini-stat {
+    background: var(--bg-dark); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px; text-align: center;
+  }
+  .mini-stat-label { font-size: 9px; color: var(--text-dim); margin-bottom: 2px; }
+  .mini-stat-val { font-size: 18px; font-weight: 700; color: var(--red); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 0; }
+  .tab-btn {
+    padding: 12px 24px; background: transparent;
+    border: 2px solid transparent; border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    color: var(--text-dim); font-size: 13px; font-weight: 400;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab-btn.active {
+    background: var(--bg-card);
+    border-color: var(--border);
+    border-top-color: var(--gold);
+    border-bottom: 1px solid var(--bg-card);
+    color: var(--text); font-weight: 600;
+    margin-bottom: -1px;
+  }
+
+  /* CONTENT */
+  .content { max-width: 1300px; margin: 0 auto; padding: 32px 32px 60px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: flex; flex-direction: column; gap: 28px; }
+
+  /* CARDS */
+  .stat-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stat-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .stat-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px; position: relative; overflow: hidden;
+  }
+  .stat-card.urgent { border-color: #E0525266; }
+  .stat-card.urgent::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--red), transparent);
+  }
+  .stat-label { font-size: 11px; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; }
+  .stat-value { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .stat-sub { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+  .val-gold { color: var(--gold); }
+  .val-red { color: var(--red); }
+  .val-blue { color: var(--blue); }
+
+  /* SECTION TITLE */
+  .section-title { margin-bottom: 24px; }
+  .section-title-row { display: flex; align-items: center; gap: 10px; }
+  .section-accent { width: 4px; height: 22px; background: var(--gold); border-radius: 2px; flex-shrink: 0; }
+  .section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: 0.02em;
+  }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    background: linear-gradient(135deg, #2A0A0A 0%, #1A0808 100%);
+    border: 1px solid #E0525244; border-left: 4px solid var(--red);
+    border-radius: 12px; padding: 18px 24px;
+    display: flex; align-items: flex-start; gap: 16;
+  }
+  .alert-icon { font-size: 24px; margin-right: 16px; flex-shrink: 0; }
+  .alert-tag { font-size: 13px; font-weight: 700; color: var(--red); letter-spacing: 0.08em; margin-bottom: 4px; }
+  .alert-body { font-size: 14px; color: #E8A0A0; line-height: 1.6; }
+  .alert-body strong { color: var(--text); }
+  .alert-body .hl-red { color: var(--red); }
+
+  /* CHART CARDS */
+  .chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-grid-12 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+  .chart-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px;
+  }
+  .chart-subtitle { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; }
+  .chart-footer {
+    margin-top: 12px; font-size: 11px; color: var(--text-dim);
+    border-top: 1px solid var(--border); padding-top: 10px;
+  }
+  canvas { max-height: 220px; }
+
+  /* INFO CARD */
+  .info-card {
+    background: linear-gradient(135deg, #0F1520 0%, #0A0E18 100%);
+    border: 1px solid var(--border-gold); border-radius: 12px; padding: 24px 28px;
+  }
+  .info-card-label { font-size: 11px; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+  .fact-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .fact-item { text-align: center; }
+  .fact-icon { font-size: 24px; margin-bottom: 8px; }
+  .fact-num { font-size: 22px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .fact-label { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+  /* IMPOSSIBLE TRIANGLE */
+  .option-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .option-card {
+    background: #0D1019; border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px;
+  }
+  .option-icon { font-size: 28px; margin-bottom: 10px; }
+  .option-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .option-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .option-tag {
+    font-size: 9px; letter-spacing: 0.1em; padding: 2px 7px;
+    border-radius: 4px; text-transform: uppercase;
+  }
+  .option-pro { font-size: 12px; color: var(--green); margin-bottom: 8px; line-height: 1.5; }
+  .option-con { font-size: 12px; color: #E0A0A0; margin-bottom: 12px; line-height: 1.5; }
+  .option-verdict {
+    font-size: 11px; font-weight: 700;
+    border-top: 1px solid var(--border); padding-top: 10px; letter-spacing: 0.04em;
+  }
+
+  /* TRANSMISSION */
+  .transmission-chain { display: flex; align-items: stretch; gap: 0; overflow-x: auto; }
+  .transmission-step { display: flex; align-items: center; flex: 1; min-width: 120px; }
+  .transmission-box {
+    flex: 1; background: #0D1019; border-radius: 10px;
+    padding: 18px 14px; text-align: center;
+  }
+  .transmission-icon { font-size: 26px; margin-bottom: 8px; }
+  .transmission-label { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .transmission-sub { font-size: 10px; color: var(--text-dim); line-height: 1.4; }
+  .transmission-arrow { font-size: 18px; color: var(--gold); padding: 0 6px; flex-shrink: 0; }
+  .lag-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+  .lag-card { background: #0D1019; border-radius: 8px; padding: 14px 16px; border: 1px solid var(--border); }
+  .lag-title { font-size: 10px; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 6px; text-transform: uppercase; }
+  .lag-text { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* SECTOR / ASIA */
+  .asia-grid { display: flex; flex-direction: column; gap: 16px; }
+  .gdp-card, .inflation-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px; flex: 1;
+  }
+  .big-num { font-size: 52px; font-weight: 800; color: var(--red); line-height: 1; }
+  .big-num-label { font-size: 14px; color: var(--text-dim); }
+  .big-num-sub { font-size: 11px; color: var(--muted); }
+  .gdp-to { font-size: 18px; color: var(--text-dim); margin: 4px 0; }
+  .gdp-note {
+    background: #0D1019; border-radius: 8px; padding: 12px 16px; margin-top: 8px;
+    border: 1px solid #E0525233; font-size: 12px; color: var(--text-dim);
+  }
+  .inflation-inner { display: flex; align-items: flex-end; gap: 16px; }
+  .infl-num { font-size: 44px; font-weight: 800; color: var(--gold); line-height: 1; }
+  .infl-label { font-size: 14px; color: var(--text-dim); }
+  .infl-sub { font-size: 11px; color: var(--muted); }
+  .infl-desc { flex: 1; font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+
+  /* HISTORICAL */
+  .hist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .hist-card {
+    background: #0D1019; border-radius: 10px; padding: 20px;
+  }
+  .hist-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .hist-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .hist-stat-label { font-size: 10px; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .hist-stat-val { font-size: 13px; font-weight: 700; }
+  .hist-note { font-size: 11px; color: var(--text-dim); line-height: 1.6; border-top: 1px solid var(--border); padding-top: 12px; }
+
+  .recovery-box {
+    background: #0D1019; border-radius: 10px; padding: 18px 20px;
+    border: 1px solid #C8923A33;
+  }
+  .recovery-label { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .recovery-phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .phase-label { font-size: 10px; color: var(--gold); margin-bottom: 4px; }
+  .phase-sector { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .phase-detail { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+  /* PORTFOLIO */
+  .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .portfolio-card { background: #0D1019; border-radius: 10px; padding: 20px; }
+  .prob-badge {
+    display: inline-block; font-size: 9px; letter-spacing: 0.1em;
+    padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .portfolio-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+  .ow-label, .uw-label, .n-label {
+    font-size: 10px; letter-spacing: 0.08em; margin-bottom: 5px; text-transform: uppercase;
+  }
+  .ow-label { color: var(--green); }
+  .uw-label { color: var(--red); }
+  .n-label { color: var(--text-dim); }
+  .tag-chip {
+    display: inline-block; font-size: 11px; padding: 2px 8px;
+    border-radius: 4px; margin-right: 4px; margin-bottom: 4px;
+  }
+  .chip-green { background: #3DAA7218; color: var(--green); border: 1px solid #3DAA7233; }
+  .chip-red { background: #E0525218; color: var(--red); border: 1px solid #E0525233; }
+  .chip-dim { background: #4A4F5E18; color: var(--text-dim); border: 1px solid #4A4F5E33; }
+  .portfolio-action { font-size: 11px; color: var(--text-dim); line-height: 1.6; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 12px; }
+
+  /* WATCHLIST */
+  .watch-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .watch-card {
+    text-align: center; background: #0D1019;
+    border-radius: 10px; padding: 18px 12px; border: 1px solid var(--border);
+  }
+  .watch-icon { font-size: 28px; margin-bottom: 8px; }
+  .watch-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .watch-signal { font-size: 10px; color: var(--text-dim); margin-bottom: 10px; line-height: 1.4; }
+  .watch-level {
+    font-size: 9px; letter-spacing: 0.07em; color: var(--gold);
+    background: #C8923A18; border-radius: 4px; padding: 3px 6px;
+    border: 1px solid #C8923A33;
+  }
+
+  /* SPR LEGEND */
+  .legend-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; font-size: 11px; color: var(--text-dim); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 5px; }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--border); padding: 20px 32px;
+    text-align: center; font-size: 11px; color: var(--muted); background: var(--bg-card);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .stat-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid-2, .chart-grid-12 { grid-template-columns: 1fr; }
+    .masthead { flex-direction: column; }
+    h1 { font-size: 24px; }
+    .fact-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .watch-grid { grid-template-columns: repeat(2, 1fr); }
+    .hist-grid, .portfolio-grid { grid-template-columns: 1fr; }
+    .recovery-phases { grid-template-columns: repeat(2, 1fr); }
+    .option-grid-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="masthead">
+      <div class="masthead-left">
+        <div class="badge-row">
+          <span class="badge badge-gold">Live Crisis Analysis · March 2026</span>
+          <span class="badge badge-red"><span class="pulse-dot"></span> Breaking</span>
+        </div>
+        <h1>The Hormuz Shock — India's Most<br><span class="gold">Underestimated Economic Risk</span> Is Playing Out</h1>
+        <div class="byline">By <strong>Jahol Prajapati</strong> · Research Analyst, Samco Securities &nbsp;|&nbsp; An analytical deep-dive into India's energy vulnerability</div>
+      </div>
+      <div class="masthead-right">
+        <div class="price-box">
+          <div class="price-label">Brent Crude (Mar 3)</div>
+          <div class="price-val">$84 <span>↑36% YTD</span></div>
+        </div>
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Ships/Day</div>
+            <div class="mini-stat-val">3</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">India SPR</div>
+            <div class="mini-stat-val">9.5d</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('hormuz', this)">🛢️ The Hormuz Shock</button>
+      <button class="tab-btn" onclick="showTab('india', this)">🇮🇳 India's Vulnerability</button>
+      <button class="tab-btn" onclick="showTab('market', this)">📈 Market Impact</button>
+      <button class="tab-btn" onclick="showTab('portfolio', this)">💼 Historical &amp; Portfolio</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- TAB 1: HORMUZ SHOCK -->
+  <div id="tab-hormuz" class="tab-panel active">
+
+    <div class="alert-banner" style="display:flex;align-items:flex-start;">
+      <span class="alert-icon">🚨</span>
+      <div>
+        <div class="alert-tag">LIVE CRISIS — MARCH 2026</div>
+        <div class="alert-body">
+          The Strait of Hormuz — a 33-km chokepoint — handles <strong>~21 million barrels/day</strong> of global oil traffic. On March 1, 2026, eastbound ship exits collapsed to just <strong class="hl-red">3 vessels carrying 2.8 million barrels</strong> — an <strong class="hl-red">87% single-day collapse</strong>. India, which routes 52% of its crude through Hormuz, is staring at its most underestimated economic risk in a decade.
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-grid-4">
+      <div class="stat-card urgent">
+        <div class="stat-label">Hormuz Traffic Collapse</div>
+        <div class="stat-value val-red">−87%</div>
+        <div class="stat-sub">Mar 1, 2026 vs prior week</div>
+      </div>
+      <div class="stat-card urgent">
+        <div class="stat-label">Ships on Mar 1</div>
+        <div class="stat-value val-red">3</div>
+        <div class="stat-sub">Down from 21–22 ships/day</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Barrels Shipped Mar 1</div>
+        <div class="stat-value val-gold">2.8M</div>
+        <div class="stat-sub">vs 21–22M bbls prior days</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">India's Hormuz Dependency</div>
+        <div class="stat-value val-gold">52%</div>
+        <div class="stat-sub">Of total crude imports</div>
+      </div>
+    </div>
+
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="section-title">
+          <div class="section-title-row">
+            <div class="section-accent"></div>
+            <h2>Hormuz Eastbound Ship Exits — Collapse in Real Time</h2>
+          </div>
+        </div>
+        <div class="chart-subtitle">Ships per day (number of vessels), Feb 25 – Mar 1, 2026</div>
+        <canvas id="shipChart"></canvas>
+        <div class="chart-footer">Source: Whalebook shipping data · Note: Represents eastbound exits only</div>
+      </div>
+      <div class="chart-card">
+        <div class="section-title">
+          <div class="section-title-row">
+            <div class="section-accent"></div>
+            <h2>Brent Crude Price Trajectory — 2026 YTD</h2>
+          </div>
+        </div>
+        <div class="chart-subtitle">USD per barrel · Up ~36% YTD as of March 3</div>
+        <canvas id="brentChart"></canvas>
+        <div class="chart-footer" style="display:flex;gap:20px;">
+          <span>Bernstein base: <strong style="color:var(--gold)">$80</strong></span>
+          <span>Bernstein extreme: <strong style="color:var(--red)">$120–150</strong></span>
+          <span>Source: Bloomberg / Bernstein</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-label">Why Hormuz Is the World's Most Critical Energy Chokepoint</div>
+      <div class="fact-grid-4">
+        <div class="fact-item"><div class="fact-icon">↔️</div><div class="fact-num">33 km</div><div class="fact-label">Width of Hormuz at its narrowest</div></div>
+        <div class="fact-item"><div class="fact-icon">🚢</div><div class="fact-num">21M bbl/day</div><div class="fact-label">Normal eastbound oil traffic</div></div>
+        <div class="fact-item"><div class="fact-icon">🌍</div><div class="fact-num">~21%</div><div class="fact-label">Of global oil trade flows through here</div></div>
+        <div class="fact-item"><div class="fact-icon">🏭</div><div class="fact-num">5 nations</div><div class="fact-label">GCC exporters fully dependent on it</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: INDIA'S VULNERABILITY -->
+  <div id="tab-india" class="tab-panel">
+
+    <div class="stat-grid-4">
+      <div class="stat-card">
+        <div class="stat-label">India Crude Imports/Day</div>
+        <div class="stat-value val-gold">5M bbl</div>
+        <div class="stat-sub">Total, all sources</div>
+      </div>
+      <div class="stat-card urgent">
+        <div class="stat-label">Via Hormuz (Daily)</div>
+        <div class="stat-value val-red">2.6M bbl</div>
+        <div class="stat-sub">52% of 5M bpd</div>
+      </div>
+      <div class="stat-card urgent">
+        <div class="stat-label">CAD Widening per $10 rise</div>
+        <div class="stat-value val-red">+50 bps</div>
+        <div class="stat-sub">Of GDP · Morgan Stanley</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Import Bill per $1 oil rise</div>
+        <div class="stat-value val-gold">$2 Billion</div>
+        <div class="stat-sub">Per year · J.P. Morgan</div>
+      </div>
+    </div>
+
+    <div class="chart-grid-12">
+      <div class="chart-card">
+        <div class="section-title">
+          <div class="section-title-row"><div class="section-accent"></div><h2>Strategic Petroleum Reserve — Days of Coverage</h2></div>
+        </div>
+        <div class="chart-subtitle">India's buffer vs global benchmarks · IEA mandates 90 days minimum</div>
+        <canvas id="sprChart" style="max-height:260px"></canvas>
+        <div class="legend-row">
+          <span><span class="legend-dot" style="background:var(--blue)"></span>Global peers</span>
+          <span><span class="legend-dot" style="background:var(--gold)"></span>IEA minimum threshold</span>
+          <span><span class="legend-dot" style="background:var(--red)"></span>India</span>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="section-title">
+          <div class="section-title-row"><div class="section-accent"></div><h2>CAD Sensitivity to Oil Price Rise</h2></div>
+        </div>
+        <div class="chart-subtitle">CAD widening (% of GDP) vs incremental oil price rise · Morgan Stanley</div>
+        <canvas id="cadChart" style="max-height:260px"></canvas>
+        <div class="chart-footer">Current Brent rise from $67 → $84 (+$17/bbl): <strong style="color:var(--red)">CAD at risk of widening ~85 bps</strong></div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="border-color:var(--border-gold)">
+      <div class="section-title">
+        <div class="section-title-row"><div class="section-accent"></div><h2>The Impossible Triangle — India's Three Crude Options</h2></div>
+      </div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:24px;max-width:700px">There is no clean exit from this bind. Each option carries a distinct, painful trade-off India must navigate simultaneously.</p>
+      <div class="option-grid-3">
+        <div class="option-card">
+          <div class="option-icon">🇷🇺</div>
+          <div class="option-header">
+            <span class="option-title">Russian Crude</span>
+            <span class="option-tag" style="background:#E0525222;color:var(--red);border:1px solid #E0525244">Geopolitical Risk</span>
+          </div>
+          <div class="option-pro">✅ Discounted pricing, established logistics, 5–7 day transit</div>
+          <div class="option-con">⚠️ US tariff threat if imports resume at scale. India cut Russian purchases from 1.71M to 1.16M bpd in 2025 under pressure</div>
+          <div class="option-verdict" style="color:var(--red)">→ Available but politically toxic</div>
+        </div>
+        <div class="option-card">
+          <div class="option-icon">🌍</div>
+          <div class="option-header">
+            <span class="option-title">Spot Market Crude</span>
+            <span class="option-tag" style="background:#D4783A22;color:#D4783A;border:1px solid #D4783A44">Fiscal Risk</span>
+          </div>
+          <div class="option-pro">✅ No geopolitical strings attached, diversified sources</div>
+          <div class="option-con">⚠️ At $84+ and rising, every $10 bbl rise costs India $20 billion more annually. Extended closure could push Brent to $120–150 (Bernstein extreme case)</div>
+          <div class="option-verdict" style="color:#D4783A">→ Expensive and escalating</div>
+        </div>
+        <div class="option-card">
+          <div class="option-icon">📉</div>
+          <div class="option-header">
+            <span class="option-title">Fiscal Deficit Expansion</span>
+            <span class="option-tag" style="background:#4A4F5E22;color:var(--muted);border:1px solid #4A4F5E44">Market Risk</span>
+          </div>
+          <div class="option-pro">✅ Absorb subsidy shock through government books short-term</div>
+          <div class="option-con">⚠️ Fiscal math breaks at $100+; rating agencies watching. CAD widens 50 bps per $10 rise. Bond yields spike, INR weakens, RBI hamstrung</div>
+          <div class="option-verdict" style="color:var(--muted)">→ Buys time but worsens outlook</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: MARKET IMPACT -->
+  <div id="tab-market" class="tab-panel">
+
+    <div class="chart-card">
+      <div class="section-title">
+        <div class="section-title-row"><div class="section-accent"></div><h2>The Transmission Mechanism — Crude to Capital Markets</h2></div>
+      </div>
+      <div class="chart-subtitle">How an oil shock travels from the Hormuz Strait to Dalal Street — and the approximate lag at each stage</div>
+      <div class="transmission-chain">
+        <div class="transmission-step">
+          <div class="transmission-box" style="border:1px solid #E0525244">
+            <div class="transmission-icon">🛢️</div>
+            <div class="transmission-label">Crude Price Rise</div>
+            <div class="transmission-sub">Brent: $67 → $84+</div>
+          </div>
+          <div class="transmission-arrow">→</div>
+        </div>
+        <div class="transmission-step">
+          <div class="transmission-box" style="border:1px solid #E07A3044">
+            <div class="transmission-icon">⛽</div>
+            <div class="transmission-label">Fuel Price Revision</div>
+            <div class="transmission-sub">Petrol / Diesel hike</div>
+          </div>
+          <div class="transmission-arrow">→</div>
+        </div>
+        <div class="transmission-step">
+          <div class="transmission-box" style="border:1px solid #D4B83044">
+            <div class="transmission-icon">🚛</div>
+            <div class="transmission-label">Transport Costs</div>
+            <div class="transmission-sub">Freight &amp; logistics surge</div>
+          </div>
+          <div class="transmission-arrow">→</div>
+        </div>
+        <div class="transmission-step">
+          <div class="transmission-box" style="border:1px solid #9B8FCC44">
+            <div class="transmission-icon">📊</div>
+            <div class="transmission-label">CPI Inflation</div>
+            <div class="transmission-sub">+0.7 pp (Goldman Sachs)</div>
+          </div>
+          <div class="transmission-arrow">→</div>
+        </div>
+        <div class="transmission-step">
+          <div class="transmission-box" style="border:1px solid #4A9EDB44">
+            <div class="transmission-icon">🏦</div>
+            <div class="transmission-label">RBI Rate Pause</div>
+            <div class="transmission-sub">Rate cut cycle at risk</div>
+          </div>
+          <div class="transmission-arrow">→</div>
+        </div>
+        <div class="transmission-step">
+          <div class="transmission-box" style="border:1px solid #4A4F5E44">
+            <div class="transmission-icon">📉</div>
+            <div class="transmission-label">Market Re-rating</div>
+            <div class="transmission-sub">Valuation compression</div>
+          </div>
+        </div>
+      </div>
+      <div class="lag-grid">
+        <div class="lag-card">
+          <div class="lag-title">Immediate (0–2 weeks)</div>
+          <div class="lag-text">Crude price spike, OMC stock selloff, INR weakening begins</div>
+        </div>
+        <div class="lag-card">
+          <div class="lag-title">Near-Term (1–3 months)</div>
+          <div class="lag-text">Fuel price revision by govt, transport cost inflation, CPI uptick</div>
+        </div>
+        <div class="lag-card">
+          <div class="lag-title">Medium-Term (2–4 quarters)</div>
+          <div class="lag-text">RBI rate-cut pause/reversal, earnings downgrades for oil-sensitive sectors</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-grid-12">
+      <div class="chart-card">
+        <div class="section-title">
+          <div class="section-title-row"><div class="section-accent"></div><h2>Sector Impact — Winners &amp; Losers</h2></div>
+        </div>
+        <div class="chart-subtitle">Directional impact score at sustained $100/bbl crude (indicative, not price targets)</div>
+        <canvas id="sectorChart" style="max-height:280px"></canvas>
+        <div class="chart-footer">Note: HPCL/BPCL bear the dual hit of higher input costs and price cap risk. ONGC/Oil India benefit from upstream realization gains.</div>
+      </div>
+      <div class="asia-grid">
+        <div class="gdp-card">
+          <div class="section-title">
+            <div class="section-title-row"><div class="section-accent"></div><h2>Asia GDP Drag</h2></div>
+          </div>
+          <div class="chart-subtitle">GDP impact per sustained $10/bbl oil price increase · Morgan Stanley</div>
+          <div style="text-align:center;padding:16px 0">
+            <div class="big-num">−20</div>
+            <div class="gdp-to">to</div>
+            <div class="big-num">−30</div>
+            <div class="big-num-label" style="margin-top:10px">basis points of GDP growth</div>
+            <div class="big-num-sub">per $10/bbl sustained oil rise</div>
+          </div>
+          <div class="gdp-note">Current shock: <strong style="color:var(--red)">+$17/bbl</strong> in &lt;30 days → Asia GDP at risk of losing <strong style="color:var(--red)">34–51 bps</strong></div>
+        </div>
+        <div class="inflation-card">
+          <div class="section-title">
+            <div class="section-title-row"><div class="section-accent"></div><h2>Asia Inflation Risk</h2></div>
+          </div>
+          <div class="chart-subtitle">Under 6-week Hormuz closure at $85/bbl · Goldman Sachs estimate</div>
+          <div class="inflation-inner" style="margin-top:16px">
+            <div>
+              <div class="infl-num">+0.7</div>
+              <div class="infl-label">percentage points</div>
+              <div class="infl-sub">on regional CPI</div>
+            </div>
+            <div class="infl-desc">A 0.7 pp CPI spike in current macro context forces every Asian central bank — including RBI — to reconsider its rate-cut trajectory</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: HISTORICAL & PORTFOLIO -->
+  <div id="tab-portfolio" class="tab-panel">
+
+    <div class="chart-card">
+      <div class="section-title">
+        <div class="section-title-row"><div class="section-accent"></div><h2>Historical Oil Shock Playbook — What Happened to India</h2></div>
+      </div>
+      <div class="chart-subtitle">Comparing the anatomy of past shocks to the 2026 Hormuz event</div>
+      <div class="hist-grid">
+        <div class="hist-card" style="border-top:3px solid var(--blue);border:1px solid #4A9EDB44">
+          <div class="hist-title">2008 — GFC Oil Spike</div>
+          <div class="hist-stats">
+            <div><div class="hist-stat-label">Price From</div><div class="hist-stat-val" style="color:var(--text-dim)">$67</div></div>
+            <div><div class="hist-stat-label">Price To</div><div class="hist-stat-val" style="color:var(--blue)">$147</div></div>
+            <div><div class="hist-stat-label">Duration</div><div class="hist-stat-val" style="color:var(--text-dim)">~8 months</div></div>
+            <div><div class="hist-stat-label">Nifty Impact</div><div class="hist-stat-val" style="color:var(--red)">−65%</div></div>
+          </div>
+          <div class="hist-note">Demand-driven spike. Refinery margins collapsed. OMCs required massive government subsidy support.</div>
+        </div>
+        <div class="hist-card" style="border-top:3px solid #9B8FCC;border:1px solid #9B8FCC44">
+          <div class="hist-title">2022 — Russia-Ukraine War</div>
+          <div class="hist-stats">
+            <div><div class="hist-stat-label">Price From</div><div class="hist-stat-val" style="color:var(--text-dim)">$80</div></div>
+            <div><div class="hist-stat-label">Price To</div><div class="hist-stat-val" style="color:#9B8FCC">$130</div></div>
+            <div><div class="hist-stat-label">Duration</div><div class="hist-stat-val" style="color:var(--text-dim)">~3 months</div></div>
+            <div><div class="hist-stat-label">Nifty Impact</div><div class="hist-stat-val" style="color:var(--red)">−18%</div></div>
+          </div>
+          <div class="hist-note">Supply-side shock. India initially faced spot cost pressure, then pivoted to Russian crude at steep discount.</div>
+        </div>
+        <div class="hist-card" style="border-top:3px solid var(--red);border:1px solid #E0525244">
+          <div class="hist-title">2026 — Hormuz Crisis</div>
+          <div class="hist-stats">
+            <div><div class="hist-stat-label">Price From</div><div class="hist-stat-val" style="color:var(--text-dim)">$67</div></div>
+            <div><div class="hist-stat-label">Price To</div><div class="hist-stat-val" style="color:var(--red)">$84+ (ongoing)</div></div>
+            <div><div class="hist-stat-label">Duration</div><div class="hist-stat-val" style="color:var(--text-dim)">Ongoing</div></div>
+            <div><div class="hist-stat-label">Nifty Impact</div><div class="hist-stat-val" style="color:var(--red)">TBD</div></div>
+          </div>
+          <div class="hist-note">Pure supply-side chokepoint event. Unlike 2022, Russia pivot faces US tariff pressure. No clean relief valve available yet.</div>
+        </div>
+      </div>
+      <div class="recovery-box">
+        <div class="recovery-label">Historical Pattern — Sectors That Recovered First After Oil Shocks</div>
+        <div class="recovery-phases">
+          <div><div class="phase-label">Phase 1 (0–3M)</div><div class="phase-sector">Upstream Oil &amp; Gas</div><div class="phase-detail">Immediate earnings uplift on higher realization</div></div>
+          <div><div class="phase-label">Phase 2 (3–6M)</div><div class="phase-sector">FMCG &amp; Rural Consumption</div><div class="phase-detail">Recover once inflation peaks and subsidy support kicks in</div></div>
+          <div><div class="phase-label">Phase 3 (6–12M)</div><div class="phase-sector">Banks &amp; NBFC</div><div class="phase-detail">Credit cycle resumes as macro stabilises</div></div>
+          <div><div class="phase-label">Phase 4 (12M+)</div><div class="phase-sector">Broad Market Recovery</div><div class="phase-detail">Full market re-rating as fiscal and CAD normalise</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="section-title">
+        <div class="section-title-row"><div class="section-accent"></div><h2>Portfolio Positioning — The Brent $90 Line in the Sand</h2></div>
+      </div>
+      <p style="font-size:12px;color:var(--text-dim);margin-bottom:24px">Brent at <strong style="color:var(--gold)">$84 today</strong>. At <strong style="color:var(--red)">$90</strong>, India's fiscal math changes materially. At <strong style="color:var(--red)">$100+</strong>, the subsidy burden, CAD stress, and RBI pause become unavoidable.</p>
+      <div class="portfolio-grid">
+        <div class="portfolio-card" style="border:1px solid #C8923A44">
+          <span class="prob-badge" style="background:#C8923A22;color:var(--gold);border:1px solid #C8923A44">Base Case</span>
+          <div class="portfolio-title">Scenario A: Brent $84–90</div>
+          <div class="ow-label">▲ Overweight</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-green">ONGC</span><span class="tag-chip chip-green">Oil India</span><span class="tag-chip chip-green">Defence PSUs</span></div>
+          <div class="uw-label">▼ Underweight</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-red">HPCL</span><span class="tag-chip chip-red">BPCL</span><span class="tag-chip chip-red">IndiGo</span></div>
+          <div class="n-label">◆ Neutral</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-dim">Banks</span><span class="tag-chip chip-dim">IT</span><span class="tag-chip chip-dim">FMCG</span></div>
+          <div class="portfolio-action">Selective repositioning. Monitor INR for weakness signal. Hold quality large caps.</div>
+        </div>
+        <div class="portfolio-card" style="border:1px solid #D4783A44">
+          <span class="prob-badge" style="background:#D4783A22;color:#D4783A;border:1px solid #D4783A44">Elevated Risk</span>
+          <div class="portfolio-title">Scenario B: Brent $90–105</div>
+          <div class="ow-label">▲ Overweight</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-green">ONGC</span><span class="tag-chip chip-green">Oil India</span><span class="tag-chip chip-green">Gold ETFs</span><span class="tag-chip chip-green">Defence</span></div>
+          <div class="uw-label">▼ Underweight</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-red">OMCs</span><span class="tag-chip chip-red">Aviation</span><span class="tag-chip chip-red">Paint cos</span><span class="tag-chip chip-red">Logistics</span></div>
+          <div class="n-label">◆ Neutral</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-dim">IT (export hedge)</span><span class="tag-chip chip-dim">Pharma</span></div>
+          <div class="portfolio-action">Risk-off tilt. Increase cash buffer 15–20%. Hedge INR exposure. Watch RBI commentary.</div>
+        </div>
+        <div class="portfolio-card" style="border:1px solid #E0525244">
+          <span class="prob-badge" style="background:#E0525222;color:var(--red);border:1px solid #E0525244">Tail Risk</span>
+          <div class="portfolio-title">Scenario C: Brent $105+</div>
+          <div class="ow-label">▲ Overweight</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-green">ONGC</span><span class="tag-chip chip-green">Oil India</span><span class="tag-chip chip-green">Gold</span><span class="tag-chip chip-green">USD assets</span></div>
+          <div class="uw-label">▼ Underweight</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-red">OMCs</span><span class="tag-chip chip-red">Aviation</span><span class="tag-chip chip-red">Consumer Disc.</span><span class="tag-chip chip-red">NBFCs</span></div>
+          <div class="n-label">◆ Neutral</div>
+          <div style="margin-bottom:10px"><span class="tag-chip chip-dim">Pharma exports</span></div>
+          <div class="portfolio-action">Defensive posture. Capital preservation priority. History shows 18–24M recovery cycles at these levels.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="section-title">
+        <div class="section-title-row"><div class="section-accent"></div><h2>What Investors Must Watch — Leading Indicators</h2></div>
+      </div>
+      <div class="watch-grid">
+        <div class="watch-card"><div class="watch-icon">💱</div><div class="watch-title">USD/INR</div><div class="watch-signal">Watch 85+ for stress</div><div class="watch-level">⚠️ High Alert</div></div>
+        <div class="watch-card"><div class="watch-icon">🛢️</div><div class="watch-title">Brent Crude</div><div class="watch-signal">$90 = line in the sand</div><div class="watch-level">⚠️ Monitor Daily</div></div>
+        <div class="watch-card"><div class="watch-icon">🏦</div><div class="watch-title">RBI MPC Tone</div><div class="watch-signal">Any hawkish tilt = pause signal</div><div class="watch-level">⚠️ Watch</div></div>
+        <div class="watch-card"><div class="watch-icon">⛽</div><div class="watch-title">OMC Fuel Price</div><div class="watch-signal">Govt revision = inflation trigger</div><div class="watch-level">📍 Political Risk</div></div>
+        <div class="watch-card"><div class="watch-icon">🚢</div><div class="watch-title">Hormuz Ships/Day</div><div class="watch-signal">Recovery above 15 = relief</div><div class="watch-level">🔴 Key Variable</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Sources: Morgan Stanley, J.P. Morgan, Goldman Sachs, Bernstein, Whalebook shipping data, IEA, Bloomberg &nbsp;|&nbsp;
+  Data as of March 3–4, 2026 &nbsp;|&nbsp; For informational purposes only · Not investment advice
+</div>
+
+<script>
+// TAB SWITCHING
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// CHART DEFAULTS
+Chart.defaults.color = '#9BA1B0';
+Chart.defaults.borderColor = '#1E2230';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+const tooltipPlugin = {
+  backgroundColor: '#1A1E2A',
+  borderColor: '#1E2230',
+  borderWidth: 1,
+  titleColor: '#9BA1B0',
+  bodyColor: '#E8E9EC',
+  padding: 10,
+  cornerRadius: 8,
+};
+
+// SHIP CHART
+new Chart(document.getElementById('shipChart'), {
+  type: 'line',
+  data: {
+    labels: ['Feb 25', 'Feb 26', 'Feb 27', 'Feb 28', 'Mar 1'],
+    datasets: [{
+      label: 'Ships',
+      data: [21, 20, 18, 12, 3],
+      borderColor: '#E05252',
+      backgroundColor: 'rgba(224,82,82,0.15)',
+      borderWidth: 2.5,
+      fill: true,
+      tension: 0.35,
+      pointBackgroundColor: '#E05252',
+      pointRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { ...tooltipPlugin } },
+    scales: {
+      x: { grid: { color: '#1E2230' }, ticks: { color: '#9BA1B0', font: { size: 11 } } },
+      y: { grid: { color: '#1E2230' }, ticks: { color: '#9BA1B0', font: { size: 11 } }, min: 0, max: 25 }
+    }
+  }
+});
+
+// BRENT CHART
+new Chart(document.getElementById('brentChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jan 1', 'Jan 15', 'Feb 1', 'Feb 15', 'Mar 1', 'Mar 3'],
+    datasets: [{
+      label: 'Brent ($/bbl)',
+      data: [67, 69, 72, 75, 80, 84],
+      borderColor: '#C8923A',
+      backgroundColor: 'rgba(200,146,58,0.15)',
+      borderWidth: 2.5,
+      fill: true,
+      tension: 0.35,
+      pointBackgroundColor: '#C8923A',
+      pointRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { ...tooltipPlugin },
+      annotation: {
+        annotations: {
+          danger: {
+            type: 'line', yMin: 90, yMax: 90,
+            borderColor: '#E05252', borderWidth: 1, borderDash: [4, 4],
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#1E2230' }, ticks: { color: '#9BA1B0', font: { size: 11 } } },
+      y: { grid: { color: '#1E2230' }, ticks: { color: '#9BA1B0', font: { size: 11 } }, min: 60, max: 100 }
+    }
+  }
+});
+
+// SPR CHART
+const sprColors = ['#4A9EDB', '#4A9EDB', '#C8923A', '#E05252', '#E05252'];
+new Chart(document.getElementById('sprChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Japan', 'S. Korea', 'IEA Target', 'India (Official)', 'India (Actual)'],
+    datasets: [{
+      label: 'Days of Coverage',
+      data: [254, 208, 90, 45, 22],
+      backgroundColor: sprColors,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { ...tooltipPlugin } },
+    scales: {
+      x: { grid: { color: '#1E2230' }, ticks: { color: '#9BA1B0', font: { size: 11 } }, min: 0, max: 270 },
+      y: { grid: { display: false }, ticks: { color: '#E8E9EC', font: { size: 12 } } }
+    }
+  }
+});
+
+// CAD CHART
+new Chart(document.getElementById('cadChart'), {
+  type: 'bar',
+  data: {
+    labels: ['+$10', '+$20', '+$30', '+$40'],
+    datasets: [{
+      label: 'CAD Widening (% GDP)',
+      data: [0.5, 1.0, 1.5, 2.0],
+      backgroundColor: ['#C8923A', '#D4783A', '#D45A3A', '#E05252'],
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { ...tooltipPlugin } },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: '#9BA1B0', font: { size: 11 } } },
+      y: { grid: { color: '#1E2230' }, ticks: { color: '#9BA1B0', font: { size: 11 } } }
+    }
+  }
+});
+
+// SECTOR CHART
+const sectorLabels = ['ONGC', 'Oil India', 'Defence', 'Gas Distrib.', 'Logistics', 'Paint Cos.', 'IndiGo/Air', 'HPCL/BPCL'];
+const sectorData = [18, 15, 12, 8, -14, -16, -20, -24];
+const sectorColors = sectorData.map(v => v > 0 ? '#3DAA72' : '#E05252');
+
+new Chart(document.getElementById('sectorChart'), {
+  type: 'bar',
+  data: {
+    labels: sectorLabels,
+    datasets: [{
+      label: 'Impact Score',
+      data: sectorData,
+      backgroundColor: sectorColors,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { ...tooltipPlugin } },
+    scales: {
+      x: {
+        grid: { color: '#1E2230' },
+        ticks: { color: '#9BA1B0', font: { size: 11 } },
+        min: -30, max: 25
+      },
+      y: { grid: { display: false }, ticks: { color: '#E8E9EC', font: { size: 11 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
